@@ -39,6 +39,10 @@ public class Task {
         this.endTime = LocalTime.of(endHour, endMinute);
     }
 
+    public Task(String taskId) {
+        this.taskId = taskId;
+    }
+
     public String getTaskId() {
         return taskId;
     }
@@ -61,10 +65,13 @@ public class Task {
         long MinPerTask = endTimeInMinutes - startTimeInMinutes;
         return MinPerTask;
     }
+    
+    
+    //We count digits two times. Shall be modified!
+    boolean isValidRedmineTaskId() {
+        boolean isValidRedmineTaskId = false;
 
-    boolean isValidTaskId() {
         int digitCounter = 0;
-        boolean isValidTaskIdValue = false;
 
         for (char c : taskId.toCharArray()) {
             if (c >= '0' && c <= '9') {
@@ -73,22 +80,70 @@ public class Task {
         }
 
         if (digitCounter == 4) {
-            if ((taskId.length() == 4) || (taskId.startsWith("LT-") && taskId.length() == 7)) {
-                isValidTaskIdValue = true;
+            if (taskId.length() == 4) {
+                isValidRedmineTaskId = true;
             }
         }
 
-        return isValidTaskIdValue;
+        return isValidRedmineTaskId;
     }
 
-    boolean isMultipleQuarterHour() {
-        boolean isMultipleQuarterHourValue = false;
-        long time = this.getMinPerTask();
+    boolean isValidLTTaskId() {
+        boolean isValidLTTaskId = false;
 
-        if (time % 15 == 0) {
-            isMultipleQuarterHourValue = true;
+        int digitCounter = 0;
+
+        for (char c : taskId.toCharArray()) {
+            if (c >= '0' && c <= '9') {
+                ++digitCounter;
+            }
         }
 
-        return isMultipleQuarterHourValue;
+        if (digitCounter == 4) {
+            if (taskId.startsWith("LT-") && taskId.length() == 7) {
+                isValidLTTaskId = true;
+            }
+        }
+
+        return isValidLTTaskId;
+    }
+    //End of 'Shall be modified!' part!
+
+    boolean isValidTaskId() {
+        boolean isValidTaskId = false;
+
+        if (isValidRedmineTaskId() || isValidLTTaskId()) {
+            isValidTaskId = true;
+        }
+
+        return isValidTaskId;
+    }
+
+    public void setTaskId(String taskId) {
+        this.taskId = taskId;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
+    public void setStartTime(int hour, int min) {
+        this.startTime = LocalTime.of(hour, min);
+    }
+
+    public void setEndTime(int hour, int min) {
+        this.endTime = LocalTime.of(hour, min);
+    }
+
+    public void setStartTime(String time) {
+        int startHour = Integer.parseInt(time.substring(0, 2));
+        int startMinute = Integer.parseInt(time.substring(3));
+        this.startTime = LocalTime.of(startHour, startMinute);
+    }
+
+    public void setEndTime(String time) {
+        int endHour = Integer.parseInt(time.substring(0, 2));
+        int endMinute = Integer.parseInt(time.substring(3));
+        this.endTime = LocalTime.of(endHour, endMinute);
     }
 }

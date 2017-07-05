@@ -5,7 +5,6 @@
  */
 package tlog16java;
 
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 
@@ -77,7 +76,7 @@ public class WorkMonth {
         if (isSameMonth(workdayToCheck) && isNewDate(workdayToCheck)) {
             if (isWeekendEnabled) {
                 days.add(workdayToCheck);
-            } else if (isWeekendEnabled == false && workdayToCheck.isWeekday()) {
+            } else if (isWeekendEnabled == false && Util.isWeekday(workdayToCheck.actualDay)) {
                 days.add(workdayToCheck);
             }
         }
@@ -86,7 +85,7 @@ public class WorkMonth {
 
     void addWorkDay(WorkDay workdayToCheck) {
         if (isSameMonth(workdayToCheck) && isNewDate(workdayToCheck)) {
-            if (workdayToCheck.isWeekday()) {
+            if (Util.isWeekday(workdayToCheck.actualDay)) {
                 days.add(workdayToCheck);
             }
         }

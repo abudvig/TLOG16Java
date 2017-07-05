@@ -7,10 +7,7 @@ package tlog16java;
 
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.Month;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
 /**
  *
@@ -63,40 +60,38 @@ public class WorkDay {
         return sumPerDay;
     }
 
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
     long getExtraMinPerDay() {
         long extraMinPerDay = requiredMinPerDay - sumPerDay;
         return extraMinPerDay;
     }
 
-    boolean isSeparatedTime(Task taskToBeChecked) {
-        boolean hasCommonTime = false;
-
-        for (int i = 0; i <= tasks.size(); i++) {
-            if ((tasks.get(i).endTime.compareTo(taskToBeChecked.startTime) < 0) || (tasks.get(i).startTime.compareTo(taskToBeChecked.endTime) > 0)) {
-                //they are separated
-            } else if (taskToBeChecked != tasks.get(i)) {
-                hasCommonTime = true;
-            }
-        }
-
-        return !hasCommonTime;
-    }
-    
-    void addTask(Task taskToBeChecked){
-        if (taskToBeChecked.isMultipleQuarterHour() && isSeparatedTime(taskToBeChecked)){
+    void addTask(Task taskToBeChecked) {
+        if (Util.isMultipleQuarterHour(taskToBeChecked.getMinPerTask()) && Util.isSeparatedTime(taskToBeChecked, tasks)) {
             tasks.add(taskToBeChecked);
         } else {
             //to be implemented later
         }
     }
-    
-    boolean isWeekday(){
-        boolean isWeekday = false;
-        
-        if ((actualDay.getDayOfWeek() != DayOfWeek.SATURDAY) && (actualDay.getDayOfWeek() != DayOfWeek.SUNDAY)){
-            isWeekday = true;
-        }
-        
-        return isWeekday;
+
+//    boolean isWeekday() {
+//        boolean isWeekday = false;
+//
+//        if ((actualDay.getDayOfWeek() != DayOfWeek.SATURDAY) && (actualDay.getDayOfWeek() != DayOfWeek.SUNDAY)) {
+//            isWeekday = true;
+//        }
+//
+//        return isWeekday;
+//    }
+
+    public void setRequiredMinPerDay(long requiredMinPerDay) {
+        this.requiredMinPerDay = requiredMinPerDay;
+    }
+
+    public void setActualDay(int year, int month, int day) {
+        this.actualDay = LocalDate.of(year, month, day);
     }
 }

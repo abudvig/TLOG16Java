@@ -13,4 +13,24 @@ import java.util.List;
  */
 public class TimeLogger {
     List <WorkMonth> months;
+
+    public List<WorkMonth> getMonths() {
+        return months;
+    }
+    
+    boolean isNewMonth(WorkMonth monthToCheck){
+        boolean isNewMonth = false;
+
+        if (months.contains(monthToCheck) == false) {
+            isNewMonth = true;
+        }
+
+        return isNewMonth;
+    }
+    
+    void addMonth(WorkMonth monthToAdd){
+        if(isNewMonth(monthToAdd)){
+            months.add(monthToAdd);
+        }
+    }
 }

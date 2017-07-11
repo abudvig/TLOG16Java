@@ -26,6 +26,20 @@ public class Util {
         return isMultipleQuarterHour;
     }
 
+    //count the minutes here getMinPerTask
+    
+    public static long digitCounter(String stringToCheck){
+        long digitCounter = 0;
+
+        for (char c : stringToCheck.toCharArray()) {
+            if (c >= '0' && c <= '9') {
+                ++digitCounter;
+            }
+        }
+        
+        return digitCounter;
+    }
+    
     public static long roundToMultipleQuarterHour(LocalTime startTime, LocalTime endTime) {
         long roundedMinutes = 0;
         

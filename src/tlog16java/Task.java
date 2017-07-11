@@ -67,19 +67,10 @@ public class Task {
     }
     
     
-    //We count digits two times. Shall be modified!
     boolean isValidRedmineTaskId() {
         boolean isValidRedmineTaskId = false;
 
-        int digitCounter = 0;
-
-        for (char c : taskId.toCharArray()) {
-            if (c >= '0' && c <= '9') {
-                ++digitCounter;
-            }
-        }
-
-        if (digitCounter == 4) {
+        if (Util.digitCounter(taskId) == 4) {
             if (taskId.length() == 4) {
                 isValidRedmineTaskId = true;
             }
@@ -91,15 +82,7 @@ public class Task {
     boolean isValidLTTaskId() {
         boolean isValidLTTaskId = false;
 
-        int digitCounter = 0;
-
-        for (char c : taskId.toCharArray()) {
-            if (c >= '0' && c <= '9') {
-                ++digitCounter;
-            }
-        }
-
-        if (digitCounter == 4) {
+        if (Util.digitCounter(taskId) == 4) {
             if (taskId.startsWith("LT-") && taskId.length() == 7) {
                 isValidLTTaskId = true;
             }
@@ -107,7 +90,6 @@ public class Task {
 
         return isValidLTTaskId;
     }
-    //End of 'Shall be modified!' part!
 
     boolean isValidTaskId() {
         boolean isValidTaskId = false;

@@ -5,8 +5,8 @@
  */
 package tlog16java;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
+import static java.time.temporal.ChronoUnit.MINUTES;
 import java.util.List;
 
 /**
@@ -57,6 +57,13 @@ public class WorkDay {
     }
 
     public long getSumPerDay() {
+        sumPerDay = 0;
+        for (int i = 0; i < this.tasks.size(); i++) {
+            if (this.tasks.get(i).startTime.isBefore(this.tasks.get(i).endTime)) {
+                long taskMinutes = MINUTES.between(tasks.get(i).startTime, tasks.get(i).endTime);
+                this.sumPerDay += taskMinutes;
+            }
+        }
         return sumPerDay;
     }
 
@@ -65,8 +72,7 @@ public class WorkDay {
     }
 
     long getExtraMinPerDay() {
-        long extraMinPerDay = requiredMinPerDay - sumPerDay;
-        return extraMinPerDay;
+        return sumPerDay - requiredMinPerDay;
     }
 
     void addTask(Task taskToBeChecked) {
@@ -76,16 +82,6 @@ public class WorkDay {
             //to be implemented later
         }
     }
-
-//    boolean isWeekday() {
-//        boolean isWeekday = false;
-//
-//        if ((actualDay.getDayOfWeek() != DayOfWeek.SATURDAY) && (actualDay.getDayOfWeek() != DayOfWeek.SUNDAY)) {
-//            isWeekday = true;
-//        }
-//
-//        return isWeekday;
-//    }
 
     public void setRequiredMinPerDay(long requiredMinPerDay) {
         this.requiredMinPerDay = requiredMinPerDay;

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
+import timelogger.exceptions.NotExpectedTimeOrderException;
 
 /**
  *
@@ -100,40 +101,44 @@ public class TimeLoggerUI {
     //Menu tasks start here
     public static void whichMenuPointToRun(int menuPointNumber) {
         //to be implemented later
-        switch (menuPointNumber) {
-            case 0:
-                doExit();
-                break;
-            case 1:
-                doListMonths();
-                break;
-            case 2:
-                doListDays();
-                break;
-            case 3:
-                doListTasks();
-                break;
-            case 4:
-                doAddNewMonth();
-                break;
-            case 5:
-                doAddNewDay();
-                break;
-            case 6:
-                doStartTask();
-                break;
-            case 7:
-                doFinishTask();
-                break;
-            case 8:
-                doDeleteTask();
-                break;
-            case 9:
-                doModifyTask();
-                break;
-            case 10:
-                doStatistics();
-                break;
+        try {
+            switch (menuPointNumber) {
+                case 0:
+                    doExit();
+                    break;
+                case 1:
+                    doListMonths();
+                    break;
+                case 2:
+                    doListDays();
+                    break;
+                case 3:
+                    doListTasks();
+                    break;
+                case 4:
+                    doAddNewMonth();
+                    break;
+                case 5:
+                    doAddNewDay();
+                    break;
+                case 6:
+                    doStartTask();
+                    break;
+                case 7:
+                    doFinishTask();
+                    break;
+                case 8:
+                    doDeleteTask();
+                    break;
+                case 9:
+                    doModifyTask();
+                    break;
+                case 10:
+                    doStatistics();
+                    break;
+            }
+        } catch (NotExpectedTimeOrderException e) {
+            System.out.println(e);
         }
 
         doMainMenu();
@@ -415,7 +420,7 @@ public class TimeLoggerUI {
         System.out.println("success");
     }
 
-    public static void doStartTask() {
+    public static void doStartTask() throws NotExpectedTimeOrderException {
         doListMonths();
         String monthIndex = askForMonth();
 
@@ -496,11 +501,11 @@ public class TimeLoggerUI {
         return endTime;
     }
 
-    public static void addEndTime(int monthIndex, int dayIndex, int taskIndex, String endTime) {
+    public static void addEndTime(int monthIndex, int dayIndex, int taskIndex, String endTime) throws NotExpectedTimeOrderException {
         TimeLogger.months.get(monthIndex).days.get(dayIndex).tasks.get(taskIndex).setEndTime(endTime);
     }
 
-    public static void doFinishTask() {
+    public static void doFinishTask() throws NotExpectedTimeOrderException {
         doListMonths();
         String monthIndex = askForMonth();
 
@@ -591,7 +596,7 @@ public class TimeLoggerUI {
     }
 
     //------------Task 9------------
-    public static void modifyTaskId(int monthIndex, int dayIndex, int taskIndex, String taskId) {
+    public static void modifyTaskId(int monthIndex, int dayIndex, int taskIndex, String taskId) throws NotExpectedTimeOrderException {
         if (taskId.isEmpty()) {
             System.out.println("Not modified");
         } else {
@@ -621,7 +626,7 @@ public class TimeLoggerUI {
         return time;
     }
 
-    public static void modifyStartTime(int monthIndex, int dayIndex, int taskIndex, String startTime) {
+    public static void modifyStartTime(int monthIndex, int dayIndex, int taskIndex, String startTime) throws NotExpectedTimeOrderException {
         if (startTime.isEmpty()) {
             System.out.println("Not modified");
         } else if (isItAValidTime(startTime)) {
@@ -632,7 +637,7 @@ public class TimeLoggerUI {
         }
     }
 
-    public static void modifyEndTime(int monthIndex, int dayIndex, int taskIndex, String endTime) {
+    public static void modifyEndTime(int monthIndex, int dayIndex, int taskIndex, String endTime) throws NotExpectedTimeOrderException {
         if (endTime.isEmpty()) {
             System.out.println("Not modified");
         } else if (isItAValidTime(endTime)) {
@@ -643,7 +648,7 @@ public class TimeLoggerUI {
         }
     }
 
-    public static void modification(int monthIndex, int dayIndex, int taskIndex) {
+    public static void modification(int monthIndex, int dayIndex, int taskIndex) throws NotExpectedTimeOrderException {
         System.out.println("Previous task id: [" + TimeLogger.months.get(monthIndex).days.get(dayIndex).tasks.get(taskIndex).taskId + "]");
         String newTaskId = askForTaskId();
         modifyTaskId(monthIndex, dayIndex, taskIndex, newTaskId);
@@ -661,7 +666,7 @@ public class TimeLoggerUI {
         modifyEndTime(monthIndex, dayIndex, taskIndex, newEndTime);
     }
 
-    public static void doModifyTask() {
+    public static void doModifyTask() throws NotExpectedTimeOrderException {
         doListMonths();
         String monthIndex = askForMonth();
 
@@ -699,7 +704,7 @@ public class TimeLoggerUI {
         System.out.println("Extra minutes: " + TimeLogger.months.get(monthIndex).getExtraMinPerMonth());
     }
 
-    public static void printDayStatistics(int monthIndex) {        
+    public static void printDayStatistics(int monthIndex) {
         for (int i = 0; i < TimeLogger.months.get(monthIndex).days.size(); i++) {
             System.out.println(TimeLogger.months.get(monthIndex).days.get(i).actualDay);
             System.out.println("--------------------");

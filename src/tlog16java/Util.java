@@ -59,8 +59,8 @@ public class Util {
     public static boolean isSeparatedTime(Task taskToBeChecked, List<Task> tasks) {
         boolean hasCommonTime = false;
 
-        for (int i = 0; i <= tasks.size(); i++) {
-            if ((tasks.get(i).endTime.compareTo(taskToBeChecked.startTime) < 0) || (tasks.get(i).startTime.compareTo(taskToBeChecked.endTime) > 0)) {
+        for (int i = 0; i < tasks.size(); i++) {
+            if ((tasks.get(i).endTime.compareTo(taskToBeChecked.startTime) <= 0) || (tasks.get(i).startTime.compareTo(taskToBeChecked.endTime) >= 0)) {
                 //they are separated
             } else if (taskToBeChecked != tasks.get(i)) {
                 hasCommonTime = true;

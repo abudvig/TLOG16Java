@@ -6,6 +6,7 @@
 package tlog16java;
 
 import java.time.LocalTime;
+import timelogger.exceptions.NotExpectedTimeOrderException;
 
 /**
  *
@@ -18,15 +19,17 @@ public class Task {
     LocalTime endTime;
     String comment;
 
-    public Task(String taskId, String comment, int startHour, int startMin, int endHour, int endMin) {
+    public Task(String taskId, String comment, int startHour, int startMin, int endHour, int endMin) throws NotExpectedTimeOrderException {
         this.taskId = taskId;
         this.comment = comment;
 
         startTime = LocalTime.of(startHour, startMin);
         endTime = LocalTime.of(endHour, endMin);
+
+        checkStartTimeEndTimeOrder();
     }
 
-    public Task(String taskId, String comment, String startTime, String endTime) {
+    public Task(String taskId, String comment, String startTime, String endTime) throws NotExpectedTimeOrderException {
         this.taskId = taskId;
         this.comment = comment;
 
@@ -37,6 +40,8 @@ public class Task {
         int endHour = Integer.parseInt(endTime.substring(0, 2));
         int endMinute = Integer.parseInt(endTime.substring(3));
         this.endTime = LocalTime.of(endHour, endMinute);
+
+        checkStartTimeEndTimeOrder();
     }
 
     public Task(String taskId) {
@@ -65,8 +70,7 @@ public class Task {
         long MinPerTask = endTimeInMinutes - startTimeInMinutes;
         return MinPerTask;
     }
-    
-    
+
     boolean isValidRedmineTaskId() {
         boolean isValidRedmineTaskId = false;
 
@@ -109,23 +113,37 @@ public class Task {
         this.comment = comment;
     }
 
-    public void setStartTime(int hour, int min) {
+    public void setStartTime(int hour, int min) throws NotExpectedTimeOrderException {
         this.startTime = LocalTime.of(hour, min);
+        checkStartTimeEndTimeOrder();
     }
 
-    public void setEndTime(int hour, int min) {
+    public void setEndTime(int hour, int min) throws NotExpectedTimeOrderException {
         this.endTime = LocalTime.of(hour, min);
+        checkStartTimeEndTimeOrder();
     }
 
-    public void setStartTime(String time) {
+    public void setStartTime(String time) throws NotExpectedTimeOrderException {
         int startHour = Integer.parseInt(time.substring(0, 2));
         int startMinute = Integer.parseInt(time.substring(3));
         this.startTime = LocalTime.of(startHour, startMinute);
+        checkStartTimeEndTimeOrder();
     }
 
-    public void setEndTime(String time) {
+    public void setEndTime(String time) throws NotExpectedTimeOrderException {
         int endHour = Integer.parseInt(time.substring(0, 2));
         int endMinute = Integer.parseInt(time.substring(3));
         this.endTime = LocalTime.of(endHour, endMinute);
+        checkStartTimeEndTimeOrder();
+    }
+
+    public void checkStartTimeEndTimeOrder() throws NotExpectedTimeOrderException {
+        if (this.endTime != LocalTime.of(0, 0)) {
+            if (this.startTime.isAfter(this.endTime)) {
+                throw new NotExpectedTimeOrderException("Not expected time order");
+            } else {
+
+            }
+        }
     }
 }

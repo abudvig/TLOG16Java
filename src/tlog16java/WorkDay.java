@@ -72,7 +72,7 @@ public class WorkDay {
     }
 
     long getExtraMinPerDay() {
-        return sumPerDay - requiredMinPerDay;
+        return this.getSumPerDay() - requiredMinPerDay;
     }
 
     void addTask(Task taskToBeChecked) {
